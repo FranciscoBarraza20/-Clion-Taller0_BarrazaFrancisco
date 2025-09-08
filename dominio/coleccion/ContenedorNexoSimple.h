@@ -18,7 +18,7 @@ public:
 
     //metodos de nodo
     void agregar(Cancion* cancion);
-    bool buscar(string cancion);
+    int buscar(string cancion);
     bool eliminar(Cancion* cancion);
     Cancion* obtenerCancion(string nombre);
     Cancion* obtenerPosicionCancion(int posicion);
