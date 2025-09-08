@@ -36,17 +36,20 @@ void ContenedorNexoSimple::agregar(Cancion *cancion) {
 
 }
 //METODO BUSCAR
-bool ContenedorNexoSimple::buscar(string nombreCancion) {
+//METODO BUSCAR
+int ContenedorNexoSimple::buscar(string nombreCancion) {
 
+    int posicion = 0;
     Nodo* actual = this->cabecera;//se crea el primer nodo de la lista
 
     while (actual != nullptr) {//recorre la lista minstras hayan nodos
         if (actual->getCancion()->getNombreMusica() == nombreCancion) {//se verifica si el nodo contiene el nombre de la cancion
-            return true;//retorna true en caso de haber encontrado el nodo
+            return posicion;//retorna la posicion en caso de haber encontrado el nodo
         }
         actual = actual->getSiguiente();//si no se cumple, pasa al siguiente nodo hasta encontrarlo
+        posicion++;
     }
-    return false;//retorna false si el nodo no fue encontrado
+    return -1;//retorna -1 si el nodo no fue encontrado
 }
 bool ContenedorNexoSimple::eliminar(Cancion *cancion) {
 
