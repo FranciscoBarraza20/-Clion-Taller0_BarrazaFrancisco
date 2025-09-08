@@ -156,9 +156,8 @@ void SistemaAplicacion::crearPlaylist(string nombre) {
 }
 void SistemaAplicacion::agregarCancion(string nombrePlaylist, string nombreCancion) {
 
-
     Playlist* playlistExistente = buscarPlaylist(nombrePlaylist);//obtenemos la playlist especifica
-
+    
     if (playlistExistente == nullptr) {//se valida si la playlist existe
         cout<<"La playlist "<<nombrePlaylist<<" no ha sido encontrada"<<endl;
         return;
@@ -170,7 +169,12 @@ void SistemaAplicacion::agregarCancion(string nombrePlaylist, string nombreCanci
         cout<<"La cancion "<<nombreCancion<< " no existe en el catalogo"<<endl;
         return;
     }
+    int posicion = playlistExistente->getlistaCanciones()->buscar(nombreCancion);//obtiene la posicion de la cancion contenida en la playlist 
 
+    if (posicion != -1) {//si la cancion ya fue agregada a la playlist
+        cout<<"La cancion "<<nombreCancion<<" ya fue agregada a la playlist. Intente con otra cancion"<<endl;
+        return;
+    }
     playlistExistente->getlistaCanciones()->agregar(cancion);//la cancion se agrega a la playlist
     cout<<"cancion agregada con exito"<<endl;
 
