@@ -108,10 +108,10 @@ void SistemaAplicacion::registrarse(string nombre, string correo, string contras
     bool tieneSigno = false;
 
     for (char caracter : contrasenia) {
-        if (isupper(caracter)) {
+        if (isupper(caracter)) {//isupper verifica caracteres en mayusculas
             tieneMayuscula = true;
         }
-        if (ispunct(caracter)) {
+        if (ispunct(caracter)) {//ispunct verifica simbolos
             tieneSigno = true;
         }
     }
