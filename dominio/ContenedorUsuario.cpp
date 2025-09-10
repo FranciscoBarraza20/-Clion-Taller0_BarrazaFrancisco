@@ -1,4 +1,3 @@
-
 #include "ContenedorUsuario.h"
 #include <stdexcept>
 #include <string>
@@ -13,7 +12,7 @@ ContenedorUsuario::ContenedorUsuario() {
 }
 
 //constructor con la cantidad maxima
-ContenedorUsuario::ContenedorUsuario(int cantidadMaxima) {
+ContenedorUsuario::ContenedorUsuario(const int cantidadMaxima) {
 
     if (cantidadMaxima < 0) {
         throw invalid_argument("Cantidad maxima no puede ser negativo");
@@ -27,7 +26,7 @@ int ContenedorUsuario::getCantidadActual(){
     return this->cantidadActual;
 }
 
-void ContenedorUsuario::agregar(Usuario* nuevo) {
+void ContenedorUsuario::agregar_usuario(Usuario* nuevo) {
 
     if (cantidadActual >= cantidadMaxima) {
         throw invalid_argument("Error al agregar usuario, contenedor lleno");
@@ -36,7 +35,7 @@ void ContenedorUsuario::agregar(Usuario* nuevo) {
     this->cantidadActual++;
 
 }
-int ContenedorUsuario::buscar(string nombre) {
+int ContenedorUsuario::buscar_usuario(string nombre)  {
 
     for (int i = 0; i < this->cantidadActual; i++) {
         if (listaUsuarios[i]->getNombre() == nombre) {
@@ -46,7 +45,7 @@ int ContenedorUsuario::buscar(string nombre) {
     return -1;
 }
 
-Usuario* ContenedorUsuario::obtener(int posicion){
+Usuario* ContenedorUsuario::obtener_usuario(int posicion){
 
     if (posicion < 0 || posicion >= this->cantidadActual) {
         throw invalid_argument("Posicion no valida");
@@ -54,8 +53,6 @@ Usuario* ContenedorUsuario::obtener(int posicion){
     return this->listaUsuarios[posicion];
 }
 ContenedorUsuario::~ContenedorUsuario() {
-    for (int i = 0; i < this->cantidadActual; ++i) {
-        delete listaUsuarios[i];
-    }
-    delete[] listaUsuarios;
+
+    delete listaUsuarios;
 }
