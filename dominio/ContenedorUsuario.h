@@ -1,7 +1,3 @@
-//
-// Created by franc on 07-09-2025.
-//
-
 #ifndef CONTENEDORUSUARIO_H
 #define CONTENEDORUSUARIO_H
 #include "Usuario.h"
@@ -20,13 +16,11 @@ public:
 
     int getCantidadActual();
     //metodos de contenedor
-    void agregar(Usuario* nuevo);
-    int buscar(const string nombre);
-    Usuario* obtener(int posicion);
+    void agregar_usuario(Usuario* nuevo);
+    int buscar_usuario(string nombre);
+    Usuario* obtener_usuario(int posicion);
     ~ContenedorUsuario();
 
 };
-
-
 
 #endif //CONTENEDORUSUARIO_H
