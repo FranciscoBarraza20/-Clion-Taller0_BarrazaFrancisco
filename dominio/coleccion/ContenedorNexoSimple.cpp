@@ -52,25 +52,29 @@ int ContenedorNexoSimple::buscar_cancion(string nombreCancion) {
 }
 bool ContenedorNexoSimple::eliminar_cancion(Cancion *cancion) {
 
-    Nodo* actual = this->cabecera;//se crea el primer nodo de la lista
+    if (this->cabecera == nullptr) {
+        return false;
+    }
+    Nodo* auxiliar = this->cabecera;
+    Nodo* anterior = nullptr;
 
-    if (actual == nullptr) {//si el nodo es nulo nose puede eliminar
-        return false;//retorna false porque nose encuentra el nodo
+    if (auxiliar->getCancion() == cancion) {
+        this->cabecera = auxiliar->getSiguiente();
+        delete auxiliar;
+        this->tamanio--;
+        return true;
     }
-    if (actual->getCancion() == cancion) {//si el nodo contiene la cancion
-        actual = actual->getSiguiente();//pasa al siguiente nodo para desrefenciarlo
-        this->tamanio--;//disminuye el tamanio de la lista
-        return true;//retorna true porque se cumple la condicion
+    while (auxiliar != nullptr && auxiliar->getCancion() != cancion) {
+        anterior = auxiliar;
+        auxiliar = auxiliar->getSiguiente();
     }
-    for (Nodo* aux = this->getCabecera(); aux != nullptr; aux = aux->getSiguiente()) {//se recorre la lista de nodos
-        if (aux->getCancion() == cancion) {//si el nodo contiene la cancion
-            Nodo* nodoEliminar = aux->getSiguiente();//el nodo que se quiere eliminar sera el auxliar pero del siguiente nodo
-            aux->setSiguiente(nodoEliminar->getSiguiente());//se modifica el nodo con el nodo que se quiere eliminar
-            this->tamanio--;//dimunuye tamanio de la lista
-            return true;//retorna true porque se cumple
-        }
+    if (auxiliar == nullptr) {
+        return false;
     }
-    return false;//retorna false en caso de no haber encontrado el nodo
+    anterior->setSiguiente(auxiliar->getSiguiente());
+    delete auxiliar;
+    this->tamanio--;
+    return true;
 
 }
 Cancion *ContenedorNexoSimple::obtener_cancion(string nombreMusica) {
@@ -111,4 +115,3 @@ Cancion *ContenedorNexoSimple::obtener_Posicion_Cancion(int posicion) {
     return nullptr;//retorna nullptr sino se encuentra el nodo
 
 }
-
