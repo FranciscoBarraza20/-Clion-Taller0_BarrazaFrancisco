@@ -106,6 +106,7 @@ void SistemaAplicacion::registrarse(string nombre, string correo, string contras
     //validar formato de contrasenia
     bool tieneMayuscula = false;
     bool tieneSigno = false;
+    bool tieneNumero = false;
 
     for (char caracter : contrasenia) {
         if (isupper(caracter)) {
@@ -114,9 +115,20 @@ void SistemaAplicacion::registrarse(string nombre, string correo, string contras
         if (ispunct(caracter)) {
             tieneSigno = true;
         }
+        if (isdigit(caracter)) {
+            tieneNumero = true;
+        }
     }
-    if (!tieneMayuscula || !tieneSigno) {
-        cout<<"Su contrasenia por lo menos debe tener uan mayuscula y un signo"<<endl;
+    if (!tieneMayuscula) {
+        cout<<"Su contrasenia debe tener al menos una mayuscula"<<endl;
+        return;
+    }
+    if (!tieneSigno) {
+        cout<<"Su contrasenia debe tener al menos un signo"<<endl;
+        return;
+    }
+    if (!tieneNumero) {
+        cout<<"Su contrasenia debe tener al menos un numero"<<endl;
         return;
     }
     int posicion = contenedorUsuario->buscar_usuario(nombre);//accede a la posicion del usuario por su nombre
@@ -169,12 +181,7 @@ void SistemaAplicacion::agregarCancion(string nombrePlaylist, string nombreCanci
         cout<<"La cancion "<<nombreCancion<< " no existe en el catalogo"<<endl;
         return;
     }
-    int posicion = playlistExistente->getlistaCanciones()->buscar_cancion(nombreCancion);//obtiene la posicion de la cancion contenida en la playlist
 
-    if (posicion != -1) {//si la cancion ya fue agregada a la playlist
-        cout<<"La cancion "<<nombreCancion<<" ya fue agregada a la playlist. Intente con otra cancion"<<endl;
-        return;
-    }
     playlistExistente->getlistaCanciones()->agregar_cancion(cancion);//la cancion se agrega a la playlist
     cout<<"cancion agregada con exito"<<endl;
 
@@ -182,9 +189,9 @@ void SistemaAplicacion::agregarCancion(string nombrePlaylist, string nombreCanci
 void SistemaAplicacion::eliminarCancion(string nombrePlaylist, string nombreCancion,int indice) {
 
     //obtenemos la playlist especifica
-    Playlist* playlistEncontrada = buscarPlaylist(nombrePlaylist);//se inicializa la playlist
+    Playlist* playlistEncontrada = buscarPlaylist(nombrePlaylist);//se obtiene la playlist especifica
 
-    if (playlistEncontrada == nullptr) {//verificamos que la playlist creada no sea nula
+    if (playlistEncontrada == nullptr) {//verificamos que la playlist existe
         cout<<"La playlist: "<<nombrePlaylist<<" no ha sido encontrada"<<endl;
         return;
     }
@@ -193,18 +200,19 @@ void SistemaAplicacion::eliminarCancion(string nombrePlaylist, string nombreCanc
         cout<<"La playlist "<<nombrePlaylist<<" esta vacia"<<endl;//la lista esta vacia
         return;
     }
-    if (indice < 0 || indice >= playlistEncontrada->getlistaCanciones()->getTamanio()){
+    if (indice < 0 || indice >= playlistEncontrada->getlistaCanciones()->getTamanio()){//si el indice de la cancion ingresada es menor a 0 y mayor al total de canciones
         cout<<"indice seleccionado no valido"<<endl;
         return;
     }
-    Cancion* cancionEliminar = playlistEncontrada->getlistaCanciones()->obtener_Posicion_Cancion(indice);//accede a la posicion de la cancion segun el indice que tiene la cancion
+    Cancion* cancionEliminar = playlistEncontrada->getlistaCanciones()->obtener_Posicion_Cancion(indice);//accede a la cancion segun el indice que tiene
 
     if (cancionEliminar == nullptr) {
         cout<<"La cancio no ha sido encontrada"<<indice<<endl;
         return;
     }
+    string nombreCancion_eliminar = cancionEliminar->getNombreMusica();//se crea una variable que reciba el nombre que tiene la cancion a eliminar
     playlistEncontrada->getlistaCanciones()->eliminar_cancion(cancionEliminar);//se elimina la cancion de la playlist
-    cout<<"La cancion "<<cancionEliminar->getNombreMusica()<<" ha sido eliminada con exito de la playlist "<<nombrePlaylist<<endl;
+    cout<<"La cancion "<<nombreCancion_eliminar<<" ha sido eliminada con exito de la playlist "<<nombrePlaylist<<endl;
 
 }
 void SistemaAplicacion::renombrarPlaylist(string nombreAntiguo,string nombreNuevo) {
@@ -227,7 +235,7 @@ void SistemaAplicacion::eliminarPlaylist(string nombrePlaylist) {
     Playlist* playlistEliminar = buscarPlaylist(nombrePlaylist);
 
     if (playlistEliminar != nullptr) {
-        usuarioActual->getContenedorPLaylist_usuario()->eliminar_playlist(nombrePlaylist);
+        usuarioActual->getContenedorPLaylist_usuario()->eliminar_playlist(nombrePlaylist);//se elimina la playlist completa
         cout<<"playlist eliminada con exito"<<endl;
     }else {
         cout<<"La playlist "<<nombrePlaylist<<" no ha sido eliminada"<<endl;
