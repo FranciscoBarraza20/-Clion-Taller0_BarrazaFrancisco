@@ -109,13 +109,13 @@ void SistemaAplicacion::registrarse(string nombre, string correo, string contras
     bool tieneNumero = false;
 
     for (char caracter : contrasenia) {
-        if (isupper(caracter)) {
+        if (isupper(caracter)) {//isupper verifica si hay mayusculas
             tieneMayuscula = true;
         }
-        if (ispunct(caracter)) {
+        if (ispunct(caracter)) {//ispunct verifica si hay signos
             tieneSigno = true;
         }
-        if (isdigit(caracter)) {
+        if (isdigit(caracter)) {//isdigit verifica si hay numeros
             tieneNumero = true;
         }
     }
