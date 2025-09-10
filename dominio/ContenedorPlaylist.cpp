@@ -11,7 +11,7 @@ ContenedorPlaylist::ContenedorPlaylist() {
 }
 
 //constructor con la cantidad maxima
-ContenedorPlaylist::ContenedorPlaylist(const int cantidadMaxima) {
+ContenedorPlaylist::ContenedorPlaylist(int cantidadMaxima) {
 
     if (cantidadMaxima < 0) {
         throw invalid_argument("Cantidad maxima no puede ser negativo");
@@ -21,7 +21,7 @@ ContenedorPlaylist::ContenedorPlaylist(const int cantidadMaxima) {
     this->listaPlaylist = new Playlist*[cantidadMaxima];
 
 }
-int ContenedorPlaylist::getCantidadActual() const{
+int ContenedorPlaylist::getCantidadActual(){
     return this->cantidadActual;
 }
 
@@ -34,7 +34,7 @@ void ContenedorPlaylist::agregar(Playlist* nuevo) {
     this->cantidadActual++;
 
 }
-int ContenedorPlaylist::buscar(const string &nombre) const {
+int ContenedorPlaylist::buscar(string nombre) {
 
     for (int i = 0; i < this->cantidadActual; i++) {
         if (listaPlaylist[i]->getnombre_playlist() == nombre) {
@@ -44,7 +44,7 @@ int ContenedorPlaylist::buscar(const string &nombre) const {
     return -1;
 }
 
-Playlist* ContenedorPlaylist::obtener(int posicion) const{
+Playlist* ContenedorPlaylist::obtener(int posicion){
 
     if (posicion < 0 || posicion >= this->cantidadActual) {
         throw invalid_argument("Posicion no valida");
