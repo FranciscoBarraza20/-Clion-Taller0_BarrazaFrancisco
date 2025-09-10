@@ -93,7 +93,7 @@ ContenedorNexoSimple::~ContenedorNexoSimple() {
 
     Nodo* actual = this->cabecera;//se declara un auxiliar que apunta al primer nodo de la lista
 
-    while (actual != nullptr) {//recorre la lista mienstras hayan nodos
+    while (actual != nullptr) {//recorre la lista mientras hayan nodos
         Nodo* siguiente = actual->getSiguiente();//se guarda la referencia del nodo actual en nodo siguiente
         delete actual;
         actual = siguiente;//el nodo actual sera el siguiente nodo de la lista
