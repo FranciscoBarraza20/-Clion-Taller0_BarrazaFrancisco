@@ -16,12 +16,12 @@ public:
     ContenedorPlaylist();
     ContenedorPlaylist(int cantidadMaxima);
 
-    int getCantidadActual() const;
+    int getCantidadActual();
     //metodos de contenedor
     void agregar(Playlist* nuevo);
-    int buscar(const string &nombre) const;
+    int buscar(string nombre);
     void eliminar(string nombre);
-    Playlist* obtener(int posicion) const;
+    Playlist* obtener(int posicion);
     ~ContenedorPlaylist();
 
 };
