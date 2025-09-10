@@ -18,11 +18,11 @@ public:
     ContenedorUsuario();
     ContenedorUsuario(int cantidadMaxima);
 
-    int getCantidadActual() const;
+    int getCantidadActual();
     //metodos de contenedor
     void agregar(Usuario* nuevo);
-    int buscar(const string &nombre) const;
-    Usuario* obtener(int posicion) const;
+    int buscar(const string nombre);
+    Usuario* obtener(int posicion);
     ~ContenedorUsuario();
 
 };
