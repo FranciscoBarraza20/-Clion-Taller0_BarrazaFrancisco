@@ -12,14 +12,14 @@ private:
 
 public:
     Playlist();
-    Playlist(const string &nombre);
+    Playlist(string &nombre);
 
     //metodo get de clase playlist
-    string getnombre_playlist() const;
-    ContenedorNexoSimple* getlistaCanciones() const;
+    string getnombre_playlist();
+    ContenedorNexoSimple* getlistaCanciones();
 
     //metodo set de clase playlist
-    void setnombre_playlist(const string &nombre);
+    void setnombre_playlist(string &nombre);
 
     //destructor de clase
     ~Playlist();
