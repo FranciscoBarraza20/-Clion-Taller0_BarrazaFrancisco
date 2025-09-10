@@ -1,7 +1,3 @@
-//
-// Created by franc on 07-09-2025.
-//
-
 #ifndef CONTENEDORPLAYLIST_H
 #define CONTENEDORPLAYLIST_H
 #include "Playlist.h"
@@ -18,14 +14,13 @@ public:
 
     int getCantidadActual();
     //metodos de contenedor
-    void agregar(Playlist* nuevo);
-    int buscar(string nombre);
-    void eliminar(string nombre);
-    Playlist* obtener(int posicion);
+    void agregar_playlist(Playlist* nuevo);
+    int buscar_playlist(string nombre);
+
+    void eliminar_playlist(string nombre);
+    Playlist* obtener_playlist(int posicion);
     ~ContenedorPlaylist();
 
 };
-
-
 
 #endif //CONTENEDORPLAYLIST_H
