@@ -92,10 +92,10 @@ ContenedorNexoSimple::~ContenedorNexoSimple() {
 
     while (actual != nullptr) {//recorre la lista mienstras hayan nodos
         Nodo* siguiente = actual->getSiguiente();//se guarda la referencia del nodo actual en nodo siguiente
-        delete actual->getCancion();//se libera memoria del nodo actual
         delete actual;
         actual = siguiente;//el nodo actual sera el siguiente nodo de la lista
     }
+    actual = nullptr;
 }
 Cancion *ContenedorNexoSimple::obtenerPosicionCancion(int posicion) {
 
