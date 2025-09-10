@@ -13,7 +13,7 @@ ContenedorUsuario::ContenedorUsuario() {
 }
 
 //constructor con la cantidad maxima
-ContenedorUsuario::ContenedorUsuario(const int cantidadMaxima) {
+ContenedorUsuario::ContenedorUsuario(int cantidadMaxima) {
 
     if (cantidadMaxima < 0) {
         throw invalid_argument("Cantidad maxima no puede ser negativo");
@@ -23,7 +23,7 @@ ContenedorUsuario::ContenedorUsuario(const int cantidadMaxima) {
     this->listaUsuarios = new Usuario*[cantidadMaxima];
 
 }
-int ContenedorUsuario::getCantidadActual() const{
+int ContenedorUsuario::getCantidadActual(){
     return this->cantidadActual;
 }
 
@@ -36,7 +36,7 @@ void ContenedorUsuario::agregar(Usuario* nuevo) {
     this->cantidadActual++;
 
 }
-int ContenedorUsuario::buscar(const string &nombre) const {
+int ContenedorUsuario::buscar(string nombre) {
 
     for (int i = 0; i < this->cantidadActual; i++) {
         if (listaUsuarios[i]->getNombre() == nombre) {
@@ -46,7 +46,7 @@ int ContenedorUsuario::buscar(const string &nombre) const {
     return -1;
 }
 
-Usuario* ContenedorUsuario::obtener(int posicion) const{
+Usuario* ContenedorUsuario::obtener(int posicion){
 
     if (posicion < 0 || posicion >= this->cantidadActual) {
         throw invalid_argument("Posicion no valida");
