@@ -31,7 +31,7 @@ void SistemaAplicacion::lecturaArchivo_usuario() {
         try {//se valida la entrada de la id ya que en vez de leerse como entero se lee como un string
             int id = stoi(id_usuario_texto);//stoi: convertir de string a int
             Usuario* usuario = new Usuario(id,nombre_usuario,correo_usuario,contrasenia_usuario);//se crea el objeto usuarios con los parametros de entrada
-            contenedorUsuario->agregar(usuario);//el usuario es agregado al contenedor de usuarios
+            contenedorUsuario->agregar_usuario(usuario);//el usuario es agregado al contenedor de usuarios
         }catch (invalid_argument &e) {
             cout<<"Error al leer el archivo usuarios"<<endl;
         }
@@ -56,7 +56,7 @@ void SistemaAplicacion::lecturaArchivo_canciones() {
             getline(ss,artista_cancion,',') && getline(ss,duracion_cancion,',')) {
             //si se cumple la condicion entonces se procede a almacenar los datos
             Cancion* cancion = new Cancion(nombre_cancion,album_cancion,artista_cancion,duracion_cancion);//de declara la cancion con sus parametros
-            this->contenedorCanciones->agregar(cancion);//la cancion se agrega al contenedor de canciones que es una lista con nexo simple
+            this->contenedorCanciones->agregar_cancion(cancion);//la cancion se agrega al contenedor de canciones que es una lista con nexo simple
 
         }else {//si es que no se extraen los campos del archivo
             cout<<"Error al leer el archivo"<<endl;
@@ -69,13 +69,13 @@ void SistemaAplicacion::lecturaArchivo_canciones() {
 //metodo para iniciar sesion
 bool SistemaAplicacion::iniciarSesion(string nombre, string contrasenia) {
 
-    int posicion = contenedorUsuario->buscar(nombre);//accede a la posicion del usuario segun su nombre
+    int posicion = contenedorUsuario->buscar_usuario(nombre);//accede a la posicion del usuario segun su nombre
 
     if (posicion == -1) {//si el usuario nose encuentra en el sistema
         cout<<"Usuario "<<nombre<<" No ha sido encontrado. Debe registrarse"<<endl;
         return false;
     }
-    Usuario* usuario = contenedorUsuario->obtener(posicion);//accede al usuario por su posicion
+    Usuario* usuario = contenedorUsuario->obtener_usuario(posicion);//accede al usuario por su posicion
 
     //si el nombre o la contrasenia ingresadas por el usuario son distintas a las que registro
     if (usuario->getNombre() != nombre || usuario->getContrasenia() != contrasenia) {
@@ -108,10 +108,10 @@ void SistemaAplicacion::registrarse(string nombre, string correo, string contras
     bool tieneSigno = false;
 
     for (char caracter : contrasenia) {
-        if (isupper(caracter)) {//isupper verifica caracteres en mayusculas
+        if (isupper(caracter)) {
             tieneMayuscula = true;
         }
-        if (ispunct(caracter)) {//ispunct verifica simbolos
+        if (ispunct(caracter)) {
             tieneSigno = true;
         }
     }
@@ -119,7 +119,7 @@ void SistemaAplicacion::registrarse(string nombre, string correo, string contras
         cout<<"Su contrasenia por lo menos debe tener uan mayuscula y un signo"<<endl;
         return;
     }
-    int posicion = contenedorUsuario->buscar(nombre);//accede a la posicion del usuario por su nombre
+    int posicion = contenedorUsuario->buscar_usuario(nombre);//accede a la posicion del usuario por su nombre
 
     if (posicion != -1) {//si el usuario intenta registrar a un usuario ya existente
         cout<<"El usuario "<<nombre<< " ya existe. Intente con otro nombre"<<endl;
@@ -129,7 +129,7 @@ void SistemaAplicacion::registrarse(string nombre, string correo, string contras
     Usuario* usuario_nuevo = new Usuario(ultimaId,nombre,correo,contrasenia);//se crea el usuario
 
     try {//se valida el usuario que se vaya a agregar
-        contenedorUsuario->agregar(usuario_nuevo);//el nuevo usuario es agregado al contenedor
+        contenedorUsuario->agregar_usuario(usuario_nuevo);//el nuevo usuario es agregado al contenedor
         cout<<"Usuario fue registrado con exito y su id es "<<ultimaId<<endl;
 
     }catch (exception &e) {//salta mensaje con la excepcion
@@ -151,31 +151,31 @@ void SistemaAplicacion::crearPlaylist(string nombre) {
         return;
     }
     Playlist* nuevaPlaylist = new Playlist(nombre);//se crea la playlist por su nombre
-    usuarioActual->getContenedorPLaylist_usuario()->agregar(nuevaPlaylist);//usuario crea la playlist
+    usuarioActual->getContenedorPLaylist_usuario()->agregar_playlist(nuevaPlaylist);//usuario crea la playlist
     cout<<"Playlist creada con exito"<<endl;
 }
 void SistemaAplicacion::agregarCancion(string nombrePlaylist, string nombreCancion) {
 
     Playlist* playlistExistente = buscarPlaylist(nombrePlaylist);//obtenemos la playlist especifica
-    
+
     if (playlistExistente == nullptr) {//se valida si la playlist existe
         cout<<"La playlist "<<nombrePlaylist<<" no ha sido encontrada"<<endl;
         return;
     }
     //verificamos si la cancion que se quiere agregar no sea nula
-    Cancion* cancion = contenedorCanciones->obtenerCancion(nombreCancion);//obtenemos la cancion especifica en base a su nombre
+    Cancion* cancion = contenedorCanciones->obtener_cancion(nombreCancion);//obtenemos la cancion especifica en base a su nombre
 
     if (cancion == nullptr) {//si la cancion que queremos acceder no existe
         cout<<"La cancion "<<nombreCancion<< " no existe en el catalogo"<<endl;
         return;
     }
-    int posicion = playlistExistente->getlistaCanciones()->buscar(nombreCancion);//obtiene la posicion de la cancion contenida en la playlist 
+    int posicion = playlistExistente->getlistaCanciones()->buscar_cancion(nombreCancion);//obtiene la posicion de la cancion contenida en la playlist
 
     if (posicion != -1) {//si la cancion ya fue agregada a la playlist
         cout<<"La cancion "<<nombreCancion<<" ya fue agregada a la playlist. Intente con otra cancion"<<endl;
         return;
     }
-    playlistExistente->getlistaCanciones()->agregar(cancion);//la cancion se agrega a la playlist
+    playlistExistente->getlistaCanciones()->agregar_cancion(cancion);//la cancion se agrega a la playlist
     cout<<"cancion agregada con exito"<<endl;
 
 }
@@ -197,13 +197,15 @@ void SistemaAplicacion::eliminarCancion(string nombrePlaylist, string nombreCanc
         cout<<"indice seleccionado no valido"<<endl;
         return;
     }
-    Cancion* cancionEliminar = playlistEncontrada->getlistaCanciones()->obtenerPosicionCancion(indice);//accede a la posicion de la cancion segun el indice que tiene la cancion
+    Cancion* cancionEliminar = playlistEncontrada->getlistaCanciones()->obtener_Posicion_Cancion(indice);//accede a la posicion de la cancion segun el indice que tiene la cancion
+
     if (cancionEliminar == nullptr) {
-        cout<<"nose encontro la cancion en el indide"<<indice<<endl;
+        cout<<"La cancio no ha sido encontrada"<<indice<<endl;
         return;
     }
-    playlistEncontrada->getlistaCanciones()->eliminar(cancionEliminar);//se elimina la cancion de la playlist
+    playlistEncontrada->getlistaCanciones()->eliminar_cancion(cancionEliminar);//se elimina la cancion de la playlist
     cout<<"La cancion "<<cancionEliminar->getNombreMusica()<<" ha sido eliminada con exito de la playlist "<<nombrePlaylist<<endl;
+
 }
 void SistemaAplicacion::renombrarPlaylist(string nombreAntiguo,string nombreNuevo) {
 
@@ -225,7 +227,7 @@ void SistemaAplicacion::eliminarPlaylist(string nombrePlaylist) {
     Playlist* playlistEliminar = buscarPlaylist(nombrePlaylist);
 
     if (playlistEliminar != nullptr) {
-        usuarioActual->getContenedorPLaylist_usuario()->eliminar(nombrePlaylist);
+        usuarioActual->getContenedorPLaylist_usuario()->eliminar_playlist(nombrePlaylist);
         cout<<"playlist eliminada con exito"<<endl;
     }else {
         cout<<"La playlist "<<nombrePlaylist<<" no ha sido eliminada"<<endl;
@@ -260,7 +262,7 @@ Playlist* SistemaAplicacion::buscarPlaylist(string nombre) {
 
     //se recorre la lista de playlist
     for (int i = 0; i < usuarioActual->getContenedorPLaylist_usuario()->getCantidadActual(); ++i) {
-        Playlist* playlist = usuarioActual->getContenedorPLaylist_usuario()->obtener(i);
+        Playlist* playlist = usuarioActual->getContenedorPLaylist_usuario()->obtener_playlist(i);
         if (playlist->getnombre_playlist() == nombre) {//si el nombre de la playlist es igual al nombre que le dio el usuario a su playlist
             return playlist;//retorna la playlist del usuario
         }
@@ -279,7 +281,7 @@ void SistemaAplicacion::escribirArchivo_usuarios() {
     }
     //recorremos la lista de los usuarios en base a la cantidad actual de usuarios que fueron registrados
     for (int i = 0; i < contenedorUsuario->getCantidadActual(); ++i) {
-        Usuario* usuario = contenedorUsuario->obtener(i);//accedemos a todas las posiciones de los usuarios registrados
+        Usuario* usuario = contenedorUsuario->obtener_usuario(i);//accedemos a todas las posiciones de los usuarios registrados
         //la variable archivo lee los datos obtenidos en el registro y los imprime en el archivo de salida
         archivoSalida_usuarios<<usuario->getId()<<",";
         archivoSalida_usuarios<<usuario->getNombre()<<",";
@@ -300,12 +302,12 @@ void SistemaAplicacion::escribirArchivo_canciones() {
     }
     //recorremos la lista de playlist de los usuarios
     for (int i = 0; i < usuarioActual->getContenedorPLaylist_usuario()->getCantidadActual(); ++i) {
-        Playlist* playlist = usuarioActual->getContenedorPLaylist_usuario()->obtener(i);
+        Playlist* playlist = usuarioActual->getContenedorPLaylist_usuario()->obtener_playlist(i);
         //el archivo de salida lee el nombre del usuario y el nombre de la playlist que le dio el usuario
 
         //se recorre la lista de canciones segun el numero de canciones en la playlist
         for (int i = 0; i < playlist->getlistaCanciones()->getTamanio(); ++i) {
-            Cancion* cancion = playlist->getlistaCanciones()->obtenerPosicionCancion(i);//se accede a todas las posiciones de las canciones de la lista
+            Cancion* cancion = playlist->getlistaCanciones()->obtener_Posicion_Cancion(i);//se accede a todas las posiciones de las canciones de la lista
             archivoSalida_canciones << usuarioActual->getNombre() <<",";
             archivoSalida_canciones << playlist->getnombre_playlist() <<",";
             archivoSalida_canciones << cancion->getNombreMusica() <<",";
