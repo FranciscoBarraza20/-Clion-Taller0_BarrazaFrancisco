@@ -25,7 +25,7 @@ int ContenedorPlaylist::getCantidadActual(){
     return this->cantidadActual;
 }
 
-void ContenedorPlaylist::agregar(Playlist* nuevo) {
+void ContenedorPlaylist::agregar_playlist(Playlist* nuevo) {
 
     if (cantidadActual >= cantidadMaxima) {
         throw invalid_argument("Error al agregar playlist, contenedor lleno");
@@ -34,7 +34,7 @@ void ContenedorPlaylist::agregar(Playlist* nuevo) {
     this->cantidadActual++;
 
 }
-int ContenedorPlaylist::buscar(string nombre) {
+int ContenedorPlaylist::buscar_playlist(string nombre)  {
 
     for (int i = 0; i < this->cantidadActual; i++) {
         if (listaPlaylist[i]->getnombre_playlist() == nombre) {
@@ -44,7 +44,7 @@ int ContenedorPlaylist::buscar(string nombre) {
     return -1;
 }
 
-Playlist* ContenedorPlaylist::obtener(int posicion){
+Playlist* ContenedorPlaylist::obtener_playlist(int posicion){
 
     if (posicion < 0 || posicion >= this->cantidadActual) {
         throw invalid_argument("Posicion no valida");
@@ -52,15 +52,15 @@ Playlist* ContenedorPlaylist::obtener(int posicion){
     return this->listaPlaylist[posicion];
 }
 
-void ContenedorPlaylist::eliminar(string nombre) {
+void ContenedorPlaylist::eliminar_playlist(string nombre) {
 
-    int posicion = buscar(nombre);
+    int posicion = buscar_playlist(nombre);
 
     if (posicion == -1) {
         throw invalid_argument("Playlist no existe");
     }
 
-    for (int i = posicion; i < this->getCantidadActual()-1; ++i) {
+    for (int i = posicion; i < this->getCantidadActual(); ++i) {
         listaPlaylist[i] = listaPlaylist[i+1];
     }
     this->cantidadActual--;
@@ -71,5 +71,5 @@ ContenedorPlaylist::~ContenedorPlaylist() {
     for (int i = 0; i < this->cantidadActual; ++i) {
         delete listaPlaylist[i];
     }
-    delete[] listaPlaylist;
+    delete listaPlaylist;
 }
