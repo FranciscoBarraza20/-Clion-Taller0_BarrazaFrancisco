@@ -16,7 +16,7 @@ void ContenedorNexoSimple::setCabecera(Nodo* cabecera) {
     this->cabecera = cabecera;
 }
 //METODO DE AGREGAR
-void ContenedorNexoSimple::agregar(Cancion *cancion) {
+void ContenedorNexoSimple::agregar_cancion(Cancion *cancion) {
 
     Nodo* nuevoNodo;//se declara el nuevo nodo
 
@@ -36,8 +36,7 @@ void ContenedorNexoSimple::agregar(Cancion *cancion) {
 
 }
 //METODO BUSCAR
-//METODO BUSCAR
-int ContenedorNexoSimple::buscar(string nombreCancion) {
+int ContenedorNexoSimple::buscar_cancion(string nombreCancion) {
 
     int posicion = 0;
     Nodo* actual = this->cabecera;//se crea el primer nodo de la lista
@@ -51,12 +50,12 @@ int ContenedorNexoSimple::buscar(string nombreCancion) {
     }
     return -1;//retorna -1 si el nodo no fue encontrado
 }
-bool ContenedorNexoSimple::eliminar(Cancion *cancion) {
+bool ContenedorNexoSimple::eliminar_cancion(Cancion *cancion) {
 
     Nodo* actual = this->cabecera;//se crea el primer nodo de la lista
 
     if (actual == nullptr) {//si el nodo es nulo nose puede eliminar
-        return false;//retiorna false porque nose encuentra el nodo
+        return false;//retorna false porque nose encuentra el nodo
     }
     if (actual->getCancion() == cancion) {//si el nodo contiene la cancion
         actual = actual->getSiguiente();//pasa al siguiente nodo para desrefenciarlo
@@ -74,7 +73,7 @@ bool ContenedorNexoSimple::eliminar(Cancion *cancion) {
     return false;//retorna false en caso de no haber encontrado el nodo
 
 }
-Cancion *ContenedorNexoSimple::obtenerCancion(string nombreMusica) {
+Cancion *ContenedorNexoSimple::obtener_cancion(string nombreMusica) {
 
     Nodo* aux = this->cabecera;//creamos el primer nodo
 
@@ -97,7 +96,7 @@ ContenedorNexoSimple::~ContenedorNexoSimple() {
     }
     actual = nullptr;
 }
-Cancion *ContenedorNexoSimple::obtenerPosicionCancion(int posicion) {
+Cancion *ContenedorNexoSimple::obtener_Posicion_Cancion(int posicion) {
 
     int posicionCancion = 0;
     Nodo* aux = this->cabecera;//se crea el primer nodo de la lista
@@ -112,3 +111,4 @@ Cancion *ContenedorNexoSimple::obtenerPosicionCancion(int posicion) {
     return nullptr;//retorna nullptr sino se encuentra el nodo
 
 }
+
