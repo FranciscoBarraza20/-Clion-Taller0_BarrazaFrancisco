@@ -17,11 +17,11 @@ public:
     void setCabecera(Nodo* cabecera);
 
     //metodos de nodo
-    void agregar(Cancion* cancion);
-    int buscar(string cancion);
-    bool eliminar(Cancion* cancion);
-    Cancion* obtenerCancion(string nombre);
-    Cancion* obtenerPosicionCancion(int posicion);
+    void agregar_cancion(Cancion* cancion);
+    int buscar_cancion(string cancion);
+    bool eliminar_cancion(Cancion* cancion);
+    Cancion* obtener_cancion(string nombre);
+    Cancion* obtener_Posicion_Cancion(int posicion);
 
     //destructor
     ~ContenedorNexoSimple();
