@@ -22,13 +22,13 @@ private:
 
 public:
     Usuario();
-    Usuario(int id,const string nombre, string correo,  string contrasenia);
+    Usuario(int id,string nombre,string correo,string contrasenia);
 
     //metodos get de clase
-    int getId() const;
-    string getNombre() const;
-    string getCorreo() const;
-    string getContrasenia() const;
+    int getId();
+    string getNombre();
+    string getCorreo();
+    string getContrasenia();
     ContenedorPlaylist *getContenedorPLaylist_usuario();
 
     //metodos set de clase
