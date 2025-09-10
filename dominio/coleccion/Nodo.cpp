@@ -1,7 +1,3 @@
-//
-// Created by franc on 07-09-2025.
-//
-
 #include "Nodo.h"
 Nodo::Nodo() {
     //constructor vacio
@@ -22,5 +18,5 @@ void Nodo::setSiguiente(Nodo *siguiente) {
     this->siguiente = siguiente;
 }
 Nodo::~Nodo() {
-    
+
 }
