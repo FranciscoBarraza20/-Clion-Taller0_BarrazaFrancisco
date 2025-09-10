@@ -22,5 +22,5 @@ void Nodo::setSiguiente(Nodo *siguiente) {
     this->siguiente = siguiente;
 }
 Nodo::~Nodo() {
-    delete cancion;
+    
 }
