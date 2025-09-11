@@ -64,7 +64,7 @@ void VistaConsola::iniciarSesion() {
             return;
         }
     }catch (invalid_argument &e) {
-        cerr<<e.what()<<endl;
+        cerr<<"Ingrese un numero"<<endl;
     }
 }
 void VistaConsola::registrar() {
@@ -194,6 +194,7 @@ void VistaConsola::agregar_Cancion(){
 void VistaConsola::eliminar_Cancion() {
 
     string nombre_playlist,nombreCancion;
+    string indiceLetra;
     int indice = 0;
 
     cout<<"::: ELIMINAR CANCION :::"<<endl;
@@ -213,24 +214,31 @@ void VistaConsola::eliminar_Cancion() {
     }
     //se recorre la lista de canciones
     for (int i = 0; i <playlist->getlistaCanciones()->getTamanio() ; ++i) {
-        Cancion* cancion = playlist->getlistaCanciones()->obtenerPosicionCancion(i);//se accede a todas las posiciones de la cancion contenida en la lista
+        Cancion* cancion = playlist->getlistaCanciones()->obtener_Posicion_Cancion(i);//se accede a todas las posiciones de la cancion contenida en la lista
         cout<<"["<<i<<"] "<<cancion->getNombreMusica()<<endl;//imprime la posicion como el nombre de la cancion
     }
     cout<<"Ingrese el indice que tiene la cancion:"<<endl;
-    cin>>indice;
-    //se valida si el indice ingresado es mayor o menor a la cantidad de canciones que hay en la playlist
-    if (indice < 0 || indice >= playlist->getlistaCanciones()->getTamanio()) {
-        cout<<"Indice seleccionado no valido"<<endl;
-        return;
-    }
-    Cancion* cancion = playlist->getlistaCanciones()->obtenerPosicionCancion(indice);
-    nombreCancion = cancion->getNombreMusica();
+    cin>>indiceLetra;
 
-    sistema->eliminarCancion(nombre_playlist,nombreCancion,indice);
+    try {
+        indice = stoi(indiceLetra);
+        if (indice < 0 || indice >= playlist->getlistaCanciones()->getTamanio()) {
+            cout<<"Indice seleccionado no valido"<<endl;
+            return;
+        }
+        Cancion* cancion = playlist->getlistaCanciones()->obtener_Posicion_Cancion(indice);
+        nombreCancion = cancion->getNombreMusica();
+
+        sistema->eliminarCancion(nombre_playlist,nombreCancion,indice);
+    }catch (invalid_argument e) {
+        cout<<"Ingrese un numero"<<endl;
+    }
+    //se valida si el indice ingresado es mayor o menor a la cantidad de canciones que hay en la playlist
 }
 void VistaConsola::eliminar_Playlist() {
 
     string nombrePlaylist;
+    string opcionLetra;
 
     cout<<"::: ELIMINAR PLAYLIST :::"<<endl;
     cout<<"Ingrese el nombre de la playlist que desea eliminar:"<<endl;
@@ -250,13 +258,21 @@ void VistaConsola::eliminar_Playlist() {
     cout<<"Esta seguro de eliminar la playlist "<<nombrePlaylist<<" ?"<<endl;
     cout<<"[1] Si"<<endl;
     cout<<"[2] No"<<endl;
-    cin>>opcion;
+    cin>>opcionLetra;
 
-    if (opcion == 1) {//si usuario ingresa la primera opcion se elimina la playlist
-        sistema->eliminarPlaylist(nombrePlaylist);
-    }else {//caso contrario se indica que la operacion se cancela
-        cout<<"Ha cancelado eliminar la playlist"<<endl;
-        return;
+    try {
+        opcion = stoi(opcionLetra);
+
+        if (opcion == 1) {//si usuario ingresa la primera opcion se elimina la playlist
+            sistema->eliminarPlaylist(nombrePlaylist);
+        }else {//caso contrario se indica que la operacion se cancela
+            cout<<"Ha cancelado eliminar la playlist"<<endl;
+            return;
+        }
+        cout<<"Opcion no valida"<<endl;
+        
+    }catch (invalid_argument e) {
+        cout<<"Ingrese un numero"<<endl;
     }
 }
 void VistaConsola::renombrar_Playlist() {
@@ -290,6 +306,8 @@ void VistaConsola::renombrar_Playlist() {
         }else {
             cout<<"Ha cancelado renombrar la playlist"<<endl;
         }
+        cout<<"Opcion no valida"<<endl;
+        
     }catch (invalid_argument &e) {
         cout<<"Ingrese un numero"<<endl;
     }
