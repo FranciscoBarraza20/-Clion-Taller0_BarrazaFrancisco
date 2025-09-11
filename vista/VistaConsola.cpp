@@ -10,6 +10,7 @@ void VistaConsola::iniciar() {
     menu();//metodo que muestra al inicio de la ejecucion del programa
 }
 void VistaConsola::menu() {
+
     string opcion_letra;
 
     while (true) {
@@ -252,7 +253,6 @@ void VistaConsola::eliminar_Playlist() {
         return;
     }
 
-    //si el nombre de la playlist es igual al nombre de la playlist que creo el usuario
     //se procede a confirmar si se desea eliminar la playlist
     int opcion;
     cout<<"Esta seguro de eliminar la playlist "<<nombrePlaylist<<" ?"<<endl;
@@ -265,12 +265,12 @@ void VistaConsola::eliminar_Playlist() {
 
         if (opcion == 1) {//si usuario ingresa la primera opcion se elimina la playlist
             sistema->eliminarPlaylist(nombrePlaylist);
-        }else {//caso contrario se indica que la operacion se cancela
+        }else if (opcion ==2) {//caso contrario se indica que la operacion se cancela
             cout<<"Ha cancelado eliminar la playlist"<<endl;
             return;
+        }else {
+            cout<<"Opcion no valida"<<endl;
         }
-        cout<<"Opcion no valida"<<endl;
-        
     }catch (invalid_argument e) {
         cout<<"Ingrese un numero"<<endl;
     }
@@ -303,11 +303,12 @@ void VistaConsola::renombrar_Playlist() {
             cout<<"Ingrese nuevo nombre para playlist"<<endl;
             cin>>nuevoNombre;
             sistema->renombrarPlaylist(nombrePlaylist,nuevoNombre);
-        }else {
+
+        }else if (opcion ==2){
             cout<<"Ha cancelado renombrar la playlist"<<endl;
+        }else {
+            cout<<"Opcion no valida"<<endl;
         }
-        cout<<"Opcion no valida"<<endl;
-        
     }catch (invalid_argument &e) {
         cout<<"Ingrese un numero"<<endl;
     }
