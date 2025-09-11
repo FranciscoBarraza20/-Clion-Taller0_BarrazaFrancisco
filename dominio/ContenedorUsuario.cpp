@@ -54,5 +54,8 @@ Usuario* ContenedorUsuario::obtener_usuario(int posicion){
 }
 ContenedorUsuario::~ContenedorUsuario() {
 
+    for (int i = 0; i < this->cantidadActual; ++i) {
+        delete listaUsuarios[i];
+    }
     delete listaUsuarios;
 }
