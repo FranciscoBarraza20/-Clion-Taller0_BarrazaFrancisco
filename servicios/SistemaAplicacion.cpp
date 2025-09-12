@@ -7,31 +7,31 @@
 #include <exception>
 #include <iostream>
 #include <sstream>
-using namespace std;
 
 //inicializar el contenedor de los usuarios con una cantidad maxima grande para sobredimensionar
 SistemaAplicacion::SistemaAplicacion() {
 
-    contenedorUsuario = new ContenedorUsuario(999);//inicializar contenedor de usuarios con una cantidad maxima
-    contenedorCanciones = new ContenedorNexoSimple();//inicializar contenedor de canciones
-    lecturaArchivo_usuario();//llamar al metodo que hace la lectura de archivos de los usuarios
-    lecturaArchivo_canciones();//llamar al metodo que hace la lectura de archivos de las canciones
+    contenedorUsuario = new ContenedorUsuario(999);
+    contenedorCanciones = new ContenedorNexoSimple();
+    lecturaArchivo_usuario();
+    lecturaArchivo_canciones();
 }
 void SistemaAplicacion::lecturaArchivo_usuario() {
 
-    ifstream archivo_usuarios("users.txt");//declara variable de tipo archivo de entrada "ifstream"
+    ifstream archivo_usuarios("users.txt");
 
-    if (!archivo_usuarios.is_open()) {//se valida si el archivose abrio correctamente
+    if (!archivo_usuarios.is_open()) {
         cout<<"Error al abrir el archivo users.txt"<<endl;
         return;
     }
-    string id_usuario_texto,nombre_usuario,correo_usuario,contrasenia_usuario;//declarar variables que almacenaran datos del archivo
+    string id_usuario_texto,nombre_usuario,correo_usuario,contrasenia_usuario;
 
     while (archivo_usuarios >> id_usuario_texto >> nombre_usuario >> correo_usuario >> contrasenia_usuario) {//mientras hayan datos en el archivo
-        try {//se valida la entrada de la id ya que en vez de leerse como entero se lee como un string
+        try {
             int id = stoi(id_usuario_texto);//stoi: convertir de string a int
             Usuario* usuario = new Usuario(id,nombre_usuario,correo_usuario,contrasenia_usuario);//se crea el objeto usuarios con los parametros de entrada
             contenedorUsuario->agregar_usuario(usuario);//el usuario es agregado al contenedor de usuarios
+
         }catch (invalid_argument &e) {
             cout<<"Error al leer el archivo usuarios"<<endl;
         }
@@ -57,6 +57,7 @@ void SistemaAplicacion::lecturaArchivo_canciones() {
             //si se cumple la condicion entonces se procede a almacenar los datos
             Cancion* cancion = new Cancion(nombre_cancion,album_cancion,artista_cancion,duracion_cancion);//de declara la cancion con sus parametros
             this->contenedorCanciones->agregar_cancion(cancion);//la cancion se agrega al contenedor de canciones que es una lista con nexo simple
+
 
         }else {//si es que no se extraen los campos del archivo
             cout<<"Error al leer el archivo"<<endl;
@@ -119,18 +120,11 @@ void SistemaAplicacion::registrarse(string nombre, string correo, string contras
             tieneNumero = true;
         }
     }
-    if (!tieneMayuscula) {
-        cout<<"Su contrasenia debe tener al menos una mayuscula"<<endl;
+    if (!tieneMayuscula || !tieneSigno || !tieneNumero) {
+        cout<<"Su contrasenia debe tener al menos una mayuscula, un signo y un numero"<<endl;
         return;
     }
-    if (!tieneSigno) {
-        cout<<"Su contrasenia debe tener al menos un signo"<<endl;
-        return;
-    }
-    if (!tieneNumero) {
-        cout<<"Su contrasenia debe tener al menos un numero"<<endl;
-        return;
-    }
+
     int posicion = contenedorUsuario->buscar_usuario(nombre);//accede a la posicion del usuario por su nombre
 
     if (posicion != -1) {//si el usuario intenta registrar a un usuario ya existente
@@ -182,6 +176,10 @@ void SistemaAplicacion::agregarCancion(string nombrePlaylist, string nombreCanci
         return;
     }
 
+    if (!playlistExistente->getlistaCanciones()->buscar_cancion(nombreCancion)) {//verifica si la cancion ya fue buscada antes
+        cout<<"cancion "<<nombreCancion<<" ya fue agregada antes. Intente con otra cancion"<<endl;
+        return;
+    }
     playlistExistente->getlistaCanciones()->agregar_cancion(cancion);//la cancion se agrega a la playlist
     cout<<"cancion agregada con exito"<<endl;
 
@@ -323,7 +321,6 @@ void SistemaAplicacion::escribirArchivo_canciones() {
             archivoSalida_canciones<<cancion->getArtista() <<",";
             archivoSalida_canciones<<cancion->getDuracion()<<endl;
         }
-        archivoSalida_canciones <<endl;//salto de linea
     }
     archivoSalida_canciones.close();//se cierra el archivo
 }
