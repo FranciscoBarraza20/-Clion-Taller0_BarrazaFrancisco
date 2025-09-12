@@ -303,29 +303,32 @@ void SistemaAplicacion::escribirArchivo_usuarios() {
 }
 
 void SistemaAplicacion::escribirArchivo_canciones() {
-
-
+    
     ofstream archivoSalida_canciones("resultados_canciones.txt");//declaramos el nombre que tendra el archivo de salida
 
     if (!archivoSalida_canciones.is_open()) {//verificar si el archivo esta abierto
         cout<<"Error al abrir el archivo de salida"<<endl;
         return;
     }
-    //recorremos la lista de playlist de los usuarios
-    for (int i = 0; i < usuarioActual->getContenedorPLaylist_usuario()->getCantidadActual(); ++i) {
-        Playlist* playlist = usuarioActual->getContenedorPLaylist_usuario()->obtener_playlist(i);
-        //el archivo de salida lee el nombre del usuario y el nombre de la playlist que le dio el usuario
+    //1° recorrer lista de usuarios registrados
+    for (int i = 0; i < contenedorUsuario->getCantidadActual(); ++i) {
+        Usuario* usuario = contenedorUsuario->obtener_usuario(i);//accedemos a todas las posiciones de los usuarios registrados
 
-        //se recorre la lista de canciones segun el numero de canciones en la playlist
-        for (int i = 0; i < playlist->getlistaCanciones()->getTamanio(); ++i) {
-            Cancion* cancion = playlist->getlistaCanciones()->obtener_Posicion_Cancion(i);//se accede a todas las posiciones de las canciones de la lista
-            archivoSalida_canciones << usuarioActual->getNombre() <<",";
-            archivoSalida_canciones << playlist->getnombre_playlist() <<",";
-            archivoSalida_canciones << cancion->getNombreMusica() <<",";
-            archivoSalida_canciones<< cancion->getAlbum() <<",";
-            archivoSalida_canciones<<cancion->getArtista() <<",";
-            archivoSalida_canciones<<cancion->getDuracion()<<endl;
+        //2° recorrer la lista de playlist de los usuarios registrados
+        for (int j = 0; j < usuario->getContenedorPLaylist_usuario()->getCantidadActual(); ++j) {
+            Playlist* playlist = usuario->getContenedorPLaylist_usuario()->obtener_playlist(j);
+
+            //3° recorrer lista de canciones agregadas a la playlist
+            for (int k = 0; k < playlist->getlistaCanciones()->getTamanio(); ++k) {
+                Cancion* cancion = playlist->getlistaCanciones()->obtener_Posicion_Cancion(k);
+                archivoSalida_canciones << usuario->getNombre()<<",";
+                archivoSalida_canciones << playlist->getnombre_playlist()<<",";
+                archivoSalida_canciones << cancion->getNombreMusica()<<",";
+                archivoSalida_canciones << cancion->getAlbum()<<",";
+                archivoSalida_canciones << cancion->getArtista()<<",";
+                archivoSalida_canciones << cancion->getDuracion()<<endl;
+            }
         }
     }
-    archivoSalida_canciones.close();//se cierra el archivo
+    archivoSalida_canciones.close();
 }
