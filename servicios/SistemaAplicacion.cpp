@@ -202,7 +202,7 @@ void SistemaAplicacion::eliminarCancion(string nombrePlaylist, string nombreCanc
         cout<<"indice seleccionado no valido"<<endl;
         return;
     }
-    Cancion* cancionEliminar = playlistEncontrada->getlistaCanciones()->obtener_Posicion_Cancion(indice);//accede a la cancion segun el indice que tiene
+    Cancion* cancionEliminar = playlistEncontrada->getlistaCanciones()->obtener_Posicion_Cancion(indice);//accede a la cancion que se quiere eliminar segun el indice que tiene
 
     if (cancionEliminar == nullptr) {
         cout<<"La cancio no ha sido encontrada"<<indice<<endl;
@@ -218,11 +218,16 @@ void SistemaAplicacion::renombrarPlaylist(string nombreAntiguo,string nombreNuev
     //obtenemos la playlist especifica
     Playlist* playlist = buscarPlaylist(nombreAntiguo);
 
-    if (playlist == nullptr) {
+    if (nombreAntiguo == nombreNuevo) {//se valida si el nombre a editar es exactamente el mismo nombre que tiene la playlist
+        cout<<"La playlist no puede tener el mismo nombre. Intente usando otro nombre"<<endl;
+        return;
+    }
+
+    if (playlist == nullptr) {//se valida si la playlist existe
         cout<<"Error al renombrar la playlist. La playlist "<<nombreAntiguo<<" no fue encontrada"<<endl;
 
     }else {
-        playlist->setnombre_playlist(nombreNuevo);
+        playlist->setnombre_playlist(nombreNuevo);//se edita el nombre
         cout<<"Playlist renombrada con exito"<<endl;
     }
 }
