@@ -40,7 +40,7 @@ void VistaConsola::menu() {
                 sistema->escribirArchivo_usuarios();
                 break;
             }
-            cout<<"opcion no valida"<<endl;
+            cout<<"Opcion fuera de rango. Intente nuevamente"<<endl;
 
         }catch (invalid_argument &e) {
             cout<<"Ingrese un numero"<<endl;
@@ -111,7 +111,7 @@ void VistaConsola::menu_playlist() {
                 cout<<"Saliendo...."<<endl;
                 break;
             }
-            cout<<"opcion no valida"<<endl;
+            cout<<"Opcion fuera de rango. Intente nuevamente"<<endl;
         }catch (invalid_argument &e) {
             cout<<"Ingrese un numero"<<endl;
         }
@@ -171,10 +171,10 @@ void VistaConsola::gestionar_Playlist() {
                 cout<<"Saliendo..."<<endl;
                 break;
             }
-            cout<<"opcion no valida"<<endl;
+            cout<<"Opcion fuera de rango. Intente nuevamente"<<endl;
 
         }catch (invalid_argument e) {
-            cout<<"ingrese un numero"<<endl;
+            cout<<"Ingrese un numero"<<endl;
         }
     }
 }
@@ -205,14 +205,6 @@ void VistaConsola::eliminar_Cancion() {
     //se llama al metodo encargado de buscar playlist por su nombre
     Playlist* playlist = sistema->buscarPlaylist(nombre_playlist);
 
-    if (playlist == nullptr) {
-        cout<<"La playlist no ha sido encontrada"<<endl;
-        return;
-    }
-    if (playlist->getlistaCanciones()->getTamanio() == 0) {//si en la playlist no hay canciones
-        cout<<"No hay mas canciones en la playlist "<<nombre_playlist<<endl;
-        return;
-    }
     //se recorre la lista de canciones
     for (int i = 0; i <playlist->getlistaCanciones()->getTamanio() ; ++i) {
         Cancion* cancion = playlist->getlistaCanciones()->obtener_Posicion_Cancion(i);//se accede a todas las posiciones de la cancion contenida en la lista
@@ -223,16 +215,10 @@ void VistaConsola::eliminar_Cancion() {
 
     try {
         indice = stoi(indiceLetra);
-        if (indice < 0 || indice >= playlist->getlistaCanciones()->getTamanio()) {
-            cout<<"Indice seleccionado no valido"<<endl;
-            return;
-        }
-        Cancion* cancion = playlist->getlistaCanciones()->obtener_Posicion_Cancion(indice);
-        nombreCancion = cancion->getNombreMusica();
-
         sistema->eliminarCancion(nombre_playlist,nombreCancion,indice);
+
     }catch (invalid_argument e) {
-        cout<<"Ingrese un numero"<<endl;
+        cout<<"Ingrese un numero:"<<endl;
     }
     //se valida si el indice ingresado es mayor o menor a la cantidad de canciones que hay en la playlist
 }
@@ -245,19 +231,12 @@ void VistaConsola::eliminar_Playlist() {
     cout<<"Ingrese el nombre de la playlist que desea eliminar:"<<endl;
     cin>>nombrePlaylist;
 
-    //se llama al metodo encargado de buscar playlist por su nombre
-    Playlist* playlist = sistema->buscarPlaylist(nombrePlaylist);
-
-    if (playlist == nullptr) {
-        cout<<"Playlist no ha sido encontrada"<<endl;
-        return;
-    }
-
     //se procede a confirmar si se desea eliminar la playlist
     int opcion;
-    cout<<"Esta seguro de eliminar la playlist "<<nombrePlaylist<<" ?"<<endl;
+    cout<<"Esta seguro de eliminar la playlist "<<nombrePlaylist<<"?"<<endl;
     cout<<"[1] Si"<<endl;
     cout<<"[2] No"<<endl;
+    cout<<"Ingrese una opcion: "<<endl;
     cin>>opcionLetra;
 
     try {
@@ -285,12 +264,6 @@ void VistaConsola::renombrar_Playlist() {
     cout<<"Ingrese nombre de la playlist: "<<endl;
     cin>>nombrePlaylist;
 
-    Playlist* playlistUsuario = sistema->buscarPlaylist(nombrePlaylist);
-
-    if (playlistUsuario == nullptr) {
-        cout<<"Playlist no encontrada"<<endl;
-        return;
-    }
     cout<<"Esta seguro de renombrar la playlist?"<<nombrePlaylist<<endl;
     cout<<"[1] Si"<<endl;
     cout<<"[2] No"<<endl;
@@ -307,7 +280,7 @@ void VistaConsola::renombrar_Playlist() {
         }else if (opcion ==2){
             cout<<"Ha cancelado renombrar la playlist"<<endl;
         }else {
-            cout<<"Opcion no valida"<<endl;
+            cout<<"Opcion fuera de rango. Intente nuevamente"<<endl;
         }
     }catch (invalid_argument &e) {
         cout<<"Ingrese un numero"<<endl;
@@ -321,11 +294,5 @@ void VistaConsola::ver_Playlist() {
     cout<<"Ingrese el nombre de la playlist que desea ver"<<endl;
     cin>>nombrePlaylist;
 
-    Playlist* playlist = sistema->buscarPlaylist(nombrePlaylist);
-
-    if (playlist == nullptr) {
-        cout<<"Playlist no ha sido encontrada"<<endl;
-        return;
-    }
     sistema->verPlaylist(nombrePlaylist);
 }
